@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stellar Wear</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Iso&display=swap" rel="stylesheet">
+  <style>
+    /* ======== GERAL ======== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, sans-serif;
+      color: #fff;
+      background: linear-gradient(135deg, #1a093b, #3e1767, #8f1487);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    section { padding: 80px 10%; text-align: center; }
+
+    h2 {
+      font-family: "Rubik Iso", system-ui;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    p { color: #e4d9f7; margin-bottom: 30px; }
+
+    button {
+      cursor: pointer;
+      border: none;
+      transition: 0.3s;
+    }
+
+    /* ======== HEADER ======== */
+    header {
+      background: rgba(0,0,0,0.4);
+      padding: 20px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-family: "Rubik Iso", system-ui;
+      font-size: 26px;
+      color: #fff;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover { color: #cfa8ff; }
+
+    #mobile_btn {
+      display: none;
+      font-size: 24px;
+      color: #fff;
+      background: none;
+    }
+
+    #cart_btn_desktop, #cart_btn {
+      background: #e3c3ff;
+      color: #000;
+      font-weight: bold;
+      padding: 8px 15px;
+      border-radius: 8px;
+    }
+
+    /* ===== MENU MOBILE ===== */
+    #mobile_menu {
+      display: none;
+      flex-direction: column;
+      background: rgba(0,0,0,0.8);
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100vh;
+      width: 70%;
+      padding: 40px 20px;
+      gap: 20px;
+      transform: translateX(100%);
+      transition: transform 0.4s ease;
+    }
+
+    #mobile_menu.active {
+      display: flex;
+      transform: translateX(0);
+    }
+
+    @media (max-width: 768px) {
+      nav ul { display: none; }
+      #mobile_btn { display: block; }
+      #cart_btn_desktop { display: none; }
+    }
+
+    /* ======== INÍCIO ======== */
+    #home .models {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    #home .models img {
+      width: 280px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      transition: transform 0.3s ease;
+    }
+
+    #home .models img:hover { transform: scale(1.05); }
+
+    /* ======== MODA ======== */
+    .moda-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .moda-item {
+      background: rgba(255,255,255,0.08);
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(128, 66, 185, 0.4);
+    }
+
+    .moda-item img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .moda-item button {
+      background: #e3c3ff;
+      color: #000;
+      padding: 8px 15px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .moda-item button:hover {
+      background: #cfa8ff;
+    }
+
+    /* ======== AVALIAÇÕES ======== */
+    .avaliacoes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    .avaliacao {
+      background: rgba(255,255,255,0.08);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(100, 50, 160, 0.5);
+    }
+
+    .avaliacao i { color: gold; }
+
+    /* ======== CARRINHO ======== */
+    #carrinho {
+      position: fixed;
+      right: 0;
+      top: 0;
+      height: 100vh;
+      width: 350px;
+      background: rgba(26, 11, 46, 0.97);
+      box-shadow: -4px 0 15px rgba(128,0,255,0.4);
+      padding: 20px;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 2000;
+      overflow-y: auto;
+    }
+
+    #carrinho.active { transform: translateX(0); }
+
+    #carrinho h3 { margin-bottom: 15px; }
+
+    .item-carrinho {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+    }
+
+    #total {
+      font-weight: bold;
+      margin-top: 15px;
+      font-size: 1.1rem;
+    }
+
+    #fechar_carrinho {
+      margin-top: 20px;
+      background: #e3c3ff;
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 8px;
+      width: 100%;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======== HEADER ======== -->
+  <header>
+    <div class="logo"><i class="fa-solid fa-user-astronaut"></i> Stellar Wear</div>
+    <nav>
+      <ul id="nav_list">
+        <li><a href="#home">Início</a></li>
+        <li><a href="#moda">Moda</a></li>
+        <li><a href="#avaliacoes">Avaliações</a></li>
+      </ul>
+    </nav>
+
+    <button id="cart_btn_desktop">Carrinho</button>
+    <button id="mobile_btn"><i class="fa-solid fa-bars"></i></button>
+
+    <div id="mobile_menu">
+      <a href="#home">Início</a>
+      <a href="#moda">Moda</a>
+      <a href="#avaliacoes">Avaliações</a>
+      <button id="cart_btn">Carrinho</button>
+    </div>
+  </header>
+
+  <!-- ======== INÍCIO ======== -->
+  <section id="home">
+    <h2>Bem-vinda à Stellar Wear ✨</h2>
+    <p>Descubra um novo universo de estilo. Roupas modernas, elegantes e feitas para brilhar!</p>
+    <div class="models">
+      <img src="https://i.imgur.com/XjQ3WgL.jpg" alt="modelo 1">
+      <img src="https://i.imgur.com/6xj4bYH.jpg" alt="modelo 2">
+      <img src="https://i.imgur.com/Sew4rGZ.jpg" alt="modelo 3">
+    </div>
+  </section>
+
+  <!-- ======== MODA ======== -->
+  <section id="moda">
+    <h2>Moda Feminina</h2>
+    <p>Escolha o estilo que combina com você 💜</p>
+    <div class="moda-container">
+      <div class="moda-item" data-nome="Saia Floral" data-preco="89.90">
+        <img src="imagens/⭐️🩶.jpg"saia">
+        <h3>Saias</h3>
+        <p>Elegância e leveza.</p>
+        <button>Adicionar ao carrinho</button>
+      </div>
+      <div class="moda-item" data-nome="Short Jeans" data-preco="79.90">
+        <img src="https://i.imgur.com/twMLW8T.jpg" alt="shorts">
+        <h3>Shorts</h3>
+        <p>Conforto para o dia a dia.</p>
+        <button>Adicionar ao carrinho</button>
+      </div>
+      <div class="moda-item" data-nome="Blusa Roxa" data-preco="89.90">
+        <img src="https://i.imgur.com/6xj4bYH.jpg" alt="blusas">
+        <h3>Blusas</h3>
+        <p>Estilo e conforto em cada detalhe.</p>
+        <button>Adicionar ao carrinho</button>
+      </div>
+      <div class="moda-item" data-nome="Jaqueta Couro" data-preco="149.90">
+        <img src="https://i.imgur.com/f06hHqS.jpg" alt="jaquetas">
+        <h3>Jaquetas</h3>
+        <p>Modernas e cheias de atitude.</p>
+        <button>Adicionar ao carrinho</button>
+      </div>
+      <div class="moda-item" data-nome="Calça Jeans" data-preco="119.90">
+        <img src="https://i.imgur.com/Sew4rGZ.jpg" alt="calças">
+        <h3>Calças</h3>
+        <p>Versatilidade e elegância.</p>
+        <button>Adicionar ao carrinho</button>
+      </div>
+      <div class="moda-item" data-nome="Vestido Preto" data-preco="99.90">
+        <img src="https://i.imgur.com/gI2I6zR.jpg" alt="vestidos">
+        <h3>Vestidos</h3>
+        <p>Leves e perfeitos para qualquer ocasião.</p>
+        <button>Adicionar ao carrinho</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== AVALIAÇÕES ======== -->
+  <section id="avaliacoes">
+    <h2>Avaliações ⭐</h2>
+    <p>O que nossas clientes dizem</p>
+    <div class="avaliacoes">
+      <div class="avaliacao">
+        <p><strong>Ana Souza</strong></p>
+        <p>"As roupas são lindas e chegaram rapidinho!"</p>
+        <p>⭐⭐⭐⭐⭐</p>
+      </div>
+      <div class="avaliacao">
+        <p><strong>Julia Mendes</strong></p>
+        <p>"A qualidade é incrível e o atendimento excelente!"</p>
+        <p>⭐⭐⭐⭐</p>
+      </div>
+      <div class="avaliacao">
+        <p><strong>Mariana Lima</strong></p>
+        <p>"Comprei um vestido e amei! Super recomendo."</p>
+        <p>⭐⭐⭐⭐⭐</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== CARRINHO ======== -->
+  <div id="carrinho">
+    <h3>🛍️ Seu Carrinho</h3>
+    <div id="itens_carrinho"></div>
+    <p id="total">Total: R$ 0,00</p>
+    <button id="fechar_carrinho">Fechar</button>
+  </div>
+
+  <!-- ======== SCRIPT ======== -->
+  <script>
+    const mobileBtn = document.getElementById("mobile_btn");
+    const mobileMenu = document.getElementById("mobile_menu");
+    const cartBtnDesktop = document.getElementById("cart_btn_desktop");
+    const cartBtnMobile = document.getElementById("cart_btn");
+    const carrinho = document.getElementById("carrinho");
+    const fecharCarrinho = document.getElementById("fechar_carrinho");
+    const itensCarrinho = document.getElementById("itens_carrinho");
+    const totalEl = document.getElementById("total");
+    let total = 0;
+
+    // abrir/fechar menus
+    mobileBtn.addEventListener("click", () => mobileMenu.classList.toggle("active"));
+    cartBtnDesktop.addEventListener("click", () => carrinho.classList.add("active"));
+    cartBtnMobile.addEventListener("click", () => carrinho.classList.add("active"));
+    fecharCarrinho.addEventListener("click", () => carrinho.classList.remove("active"));
+
+    // adicionar itens ao carrinho
+    const botoes = document.querySelectorAll(".moda-item button");
+    botoes.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const item = e.target.closest(".moda-item");
+        const nome = item.dataset.nome;
+        const preco = parseFloat(item.dataset.preco);
+        total += preco;
+
+        const div = document.createElement("div");
+        div.classList.add("item-carrinho");
+        div.innerHTML = `<span>${nome}</span><span>R$ ${preco.toFixed(2)}</span>`;
+        itensCarrinho.appendChild(div);
+
+        totalEl.textContent = `Total: R$ ${total.toFixed(2)}`;
+      });
+    });
+  </script>
+</body>
+</html>
